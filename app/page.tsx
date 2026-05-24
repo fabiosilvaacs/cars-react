@@ -1,8 +1,8 @@
 'use client';
-import React, { Activity, useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
-import DataGrid, { type DefaultSort } from './components/DataGrid';
+import DataGrid, { type SortConfig } from './components/DataGrid';
 import Modal from './components/Modal';
 import EntityForm from './components/EntityForm';
 import { fetchCatalog } from '../lib/fetch-catalog';
@@ -50,30 +50,31 @@ export default function Home(){
   const columns = useMemo(() => {
     if (view === 'carros') {
       return [
-        { key: 'id', label: 'ID' },
-        { key: 'modelo', label: 'Modelo' },
-        { key: 'ano', label: 'Ano' },
+        { key: 'id',          label: 'ID',          sortType: 'numeric' as const },
+        { key: 'modelo',      label: 'Modelo' },
+        { key: 'ano',         label: 'Ano',         sortType: 'numeric' as const },
         { key: 'combustivel', label: 'Combustível' },
-        { key: 'numPortas', label: 'Portas' },
-        { key: 'cor', label: 'Cor' },
-        { key: 'valor', label: 'Valor' },
-        { key: 'createdAt', label: 'Criado em', format: (value: unknown) => formatDateBR(value as string | Date) },
-      ] as const;
+        { key: 'numPortas',   label: 'Portas',      sortType: 'numeric' as const },
+        { key: 'cor',         label: 'Cor' },
+        { key: 'valor',       label: 'Valor',       sortType: 'numeric' as const },
+        { key: 'createdAt',   label: 'Criado em',   sortType: 'date' as const,
+          format: (value: unknown) => formatDateBR(value as string | Date) },
+      ];
     }
     if (view === 'modelos') {
       return [
-        { key: 'id', label: 'ID' },
-        { key: 'nome', label: 'Nome' },
+        { key: 'id',    label: 'ID',    sortType: 'numeric' as const },
+        { key: 'nome',  label: 'Nome' },
         { key: 'marca', label: 'Marca' },
-      ] as const;
+      ];
     }
     return [
-      { key: 'id', label: 'ID' },
+      { key: 'id',   label: 'ID',   sortType: 'numeric' as const },
       { key: 'nome', label: 'Nome' },
-    ] as const;
+    ];
   }, [view]);
 
-  const defaultSort = useMemo<DefaultSort>(
+  const defaultSort = useMemo<SortConfig>(
     () =>
       view === 'carros'
         ? { key: 'ano', direction: 'desc' }
@@ -165,13 +166,13 @@ export default function Home(){
             </div>
           </div>
 
-          <Activity mode={loading ? 'visible' : 'hidden'}>
+          {loading && (
             <div role="status" aria-live="polite" className="rounded bg-white p-4 shadow-sm text-slate-600">Carregando dados...</div>
-          </Activity>
+          )}
 
-          <Activity mode={error ? 'visible' : 'hidden'}>
+          {error && (
             <div role="alert" className="rounded border border-red-200 bg-red-50 p-4 text-red-700">{error}</div>
-          </Activity>
+          )}
 
           <div className="overflow-x-auto rounded bg-white shadow-sm">
             <DataGrid
@@ -180,10 +181,24 @@ export default function Home(){
               columns={columns}
               defaultSort={defaultSort}
               groupBy={(view === 'carros' || view === 'modelos') ? 'marca' : undefined}
+              groupItemLabel={view === 'carros' ? 'carro' : 'modelo'}
+              groupItemLabelPlural={view === 'carros' ? 'carros' : 'modelos'}
+              groupFallbackLabel="Sem marca"
               onAdd={handleAdd}
-              onEdit={handleEdit}
-              onDelete={(item:any) => handleDelete(item, view === 'carros' ? 'carro' : view === 'marcas' ? 'marca' : 'modelo')}
-              titleAdd={view === 'carros' ? 'Adicionar Carro' : view === 'marcas' ? 'Adicionar Marca' : 'Adicionar Modelo'}
+              addLabel={view === 'carros' ? 'Adicionar Carro' : view === 'marcas' ? 'Adicionar Marca' : 'Adicionar Modelo'}
+              actions={[
+                {
+                  label: 'Editar',
+                  className: 'cursor-pointer rounded bg-amber-300 px-2 py-1',
+                  onClick: handleEdit,
+                },
+                {
+                  label: 'Excluir',
+                  className: 'cursor-pointer rounded bg-red-500 px-2 py-1 text-white',
+                  onClick: (item) => handleDelete(item, view === 'carros' ? 'carro' : view === 'marcas' ? 'marca' : 'modelo'),
+                },
+              ]}
+              onRowDoubleClick={handleEdit}
             />
           </div>
         </main>

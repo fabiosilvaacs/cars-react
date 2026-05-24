@@ -14,6 +14,8 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
  
 * Para facilitar deixei o arquivo Insomnia_v5.yaml para ser importado e fazer os testes dos endpoints.
 
+* Documentação do DataGrid se encontra em DataGrid.md.
+
 ## GitHub https://github.com/fabiosilvaacs/cars_fastapi
 
 ## Publicação https://cars-fastapi.onrender.com/
