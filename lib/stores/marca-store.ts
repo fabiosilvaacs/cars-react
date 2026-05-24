@@ -12,7 +12,7 @@ interface MarcaStoreState {
   loading: boolean;
   error: string | null;
   fetch: () => Promise<void>;
-  addMarca: (nome: string) => Promise<void>;
+  addMarca: (nome: string) => Promise<Marca>;
   updateMarca: (id: number, nome: string) => Promise<void>;
   removeMarca: (id: number) => Promise<void>;
 }
@@ -37,6 +37,7 @@ export const useMarcaStore = create<MarcaStoreState>((set) => ({
     try {
       const marca = await createMarca({ nome });
       set((state) => ({ marcas: [...state.marcas, marca] }));
+      return marca;
     } catch (err: unknown) {
       set({ error: err instanceof Error ? err.message : String(err) });
       throw err;

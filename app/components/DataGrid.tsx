@@ -125,6 +125,11 @@ export type DataGridProps<T extends { id: number }> = {
    * When omitted, double-click has no effect.
    */
   onRowDoubleClick?: (item: T) => void;
+  /**
+   * Controlled selected item ID. When provided, selection is controlled by the parent.
+   * When omitted, selection is managed internally.
+   */
+  selectedId?: number | null;
 
   // ── Empty state ───────────────────────────
   /**
@@ -201,21 +206,29 @@ export default function DataGrid<T extends { id: number }>({
   actions = [],
   onRowClick,
   onRowDoubleClick,
+  selectedId: controlledSelectedId,
   emptyState = <p className="py-8 text-center text-sm text-gray-400">Nenhum item encontrado.</p>,
 }: DataGridProps<T>) {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortConfig>(defaultSort ?? { key: '', direction: 'asc' });
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [internalSelectedId, setInternalSelectedId] = useState<number | null>(null);
+  const selectedId = controlledSelectedId !== undefined ? controlledSelectedId : internalSelectedId;
+  const setSelectedId = useMemo(
+    () => (controlledSelectedId !== undefined ? () => {} : setInternalSelectedId),
+    [controlledSelectedId],
+  );
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(() => new Set());
 
   // Sync sort when defaultSort prop changes (e.g. parent switches view)
   useEffect(() => {
     if (defaultSort) setSort(defaultSort);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultSort]);
 
   // Reset collapsed groups when groupBy changes
   useEffect(() => {
     setCollapsedGroups(new Set());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupBy]);
 
   // ── Sorting ─────────────────────────────────
@@ -293,7 +306,7 @@ export default function DataGrid<T extends { id: number }>({
       setSelectedId((prev) => (prev === item.id ? null : item.id));
       onRowClick?.(item);
     },
-    [onRowClick],
+    [onRowClick, setSelectedId],
   );
 
   // ── Render helpers ───────────────────────────

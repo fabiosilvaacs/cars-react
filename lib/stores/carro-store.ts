@@ -19,7 +19,7 @@ interface CarroStoreState {
     numPortas: number;
     cor: string;
     valor: number;
-  }) => Promise<void>;
+  }) => Promise<Carro>;
   updateCarro: (
     id: number,
     data: {
@@ -54,6 +54,7 @@ export const useCarroStore = create<CarroStoreState>((set) => ({
     try {
       const carro = await apiCreateCar(data);
       set((state) => ({ carros: [...state.carros, carro] }));
+      return carro;
     } catch (err: unknown) {
       set({ error: err instanceof Error ? err.message : String(err) });
       throw err;

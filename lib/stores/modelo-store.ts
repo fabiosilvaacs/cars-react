@@ -12,7 +12,7 @@ interface ModeloStoreState {
   loading: boolean;
   error: string | null;
   fetch: () => Promise<void>;
-  addModelo: (nome: string, marcaId: number) => Promise<void>;
+  addModelo: (nome: string, marcaId: number) => Promise<Modelo>;
   updateModelo: (id: number, nome: string, marcaId: number) => Promise<void>;
   removeModelo: (id: number) => Promise<void>;
 }
@@ -37,6 +37,7 @@ export const useModeloStore = create<ModeloStoreState>((set) => ({
     try {
       const modelo = await createModelo({ nome, marcaId });
       set((state) => ({ modelos: [...state.modelos, modelo] }));
+      return modelo;
     } catch (err: unknown) {
       set({ error: err instanceof Error ? err.message : String(err) });
       throw err;

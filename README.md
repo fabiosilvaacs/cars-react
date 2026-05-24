@@ -16,6 +16,8 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 
 * Documentação do DataGrid se encontra em DataGrid.md.
 
+* Ao adicionar um item já é selecionado no grid.
+
 ## GitHub https://github.com/fabiosilvaacs/cars_fastapi
 
 ## Publicação https://cars-fastapi.onrender.com/

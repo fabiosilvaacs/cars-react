@@ -20,6 +20,7 @@ export default function Home(){
   const [editing, setEditing] = useState<Carro | Marca | Modelo | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Carro | Marca | Modelo | null>(null);
   const [deleteType, setDeleteType] = useState<'carro'|'marca'|'modelo' | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const carros = useCarroStore((state) => state.carros);
   const marcas = useMarcaStore((state) => state.marcas);
@@ -46,6 +47,10 @@ export default function Home(){
   useEffect(() => {
     void fetchCatalog();
   }, []);
+
+  useEffect(() => {
+    setSelectedId(null);
+  }, [view]);
 
   const columns = useMemo(() => {
     if (view === 'carros') {
@@ -124,21 +129,24 @@ export default function Home(){
         if (editing?.id) {
           await updateCarro(editing.id, data);
         } else {
-          await addCarro(data);
+          const newCarro = await addCarro(data);
+          setSelectedId(newCarro.id);
         }
       } else if (view === 'marcas') {
         const { nome } = formData as NomeFormValues;
         if (editing?.id) {
           await updateMarca(editing.id, nome);
         } else {
-          await addMarca(nome);
+          const newMarca = await addMarca(nome);
+          setSelectedId(newMarca.id);
         }
       } else {
         const { nome, marcaId } = formData as ModeloFormValues;
         if (editing?.id) {
           await updateModelo(editing.id, nome, marcaId);
         } else {
-          await addModelo(nome, marcaId);
+          const newModelo = await addModelo(nome, marcaId);
+          setSelectedId(newModelo.id);
         }
       }
       setModalOpen(false);
@@ -199,6 +207,7 @@ export default function Home(){
                 },
               ]}
               onRowDoubleClick={handleEdit}
+              selectedId={selectedId}
             />
           </div>
         </main>
