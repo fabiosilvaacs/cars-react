@@ -1,12 +1,14 @@
 'use client';
-import React from 'react';
+import { Activity } from 'react';
 
 export default function Sidebar({ collapsed, onToggle, view, setView }: { collapsed: boolean; onToggle: ()=>void; view: 'carros' | 'marcas' | 'modelos'; setView: (v:'carros' | 'marcas' | 'modelos')=>void }){
   return (
     <aside className={`h-full bg-white border-r p-3 ${collapsed? 'w-16':'w-64'} transition-width`} aria-label="Menu lateral">
       <div className="flex items-center justify-between">
         <button aria-label="Toggle menu" onClick={onToggle} className="cursor-pointer p-2">☰</button>
-        {!collapsed && <span className="font-semibold"></span>}
+        <Activity mode={collapsed ? 'hidden' : 'visible'}>
+          <span className="font-semibold"></span>
+        </Activity>
       </div>
       <nav className="mt-4" role="navigation">
         <ul className="space-y-2">
