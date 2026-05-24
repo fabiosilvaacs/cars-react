@@ -1,0 +1,18 @@
+-- CreateTable
+CREATE TABLE "Marca" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "nome" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Carro" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "modelo" TEXT NOT NULL,
+    "ano" INTEGER NOT NULL,
+    "marcaId" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Carro_marcaId_fkey" FOREIGN KEY ("marcaId") REFERENCES "Marca" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Marca_nome_key" ON "Marca"("nome");
