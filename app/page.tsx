@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback, Activity } from 'react';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import DataGrid, { type SortConfig } from './components/DataGrid';
@@ -174,13 +174,13 @@ export default function Home(){
             </div>
           </div>
 
-          {loading && (
+          <Activity mode={loading ? 'visible' : 'hidden'}>
             <div role="status" aria-live="polite" className="rounded bg-white p-4 shadow-sm text-slate-600">Carregando dados...</div>
-          )}
+          </Activity>
 
-          {error && (
+          <Activity mode={error ? 'visible' : 'hidden'}>
             <div role="alert" className="rounded border border-red-200 bg-red-50 p-4 text-red-700">{error}</div>
-          )}
+          </Activity>
 
           <div className="overflow-x-auto rounded bg-white shadow-sm">
             <DataGrid
