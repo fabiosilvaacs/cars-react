@@ -16,7 +16,7 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 
 * Ao adicionar um item já é selecionado no grid.
 
-## GitHub https://github.com/fabiosilvaacs/cars_fastapi
+## GitHub https://github.com/fabiosilvaacs/cars-react
 
 ## Publicação https://cars-fastapi.onrender.com/
 
