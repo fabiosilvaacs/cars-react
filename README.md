@@ -20,6 +20,9 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 
 ## Publicação https://cars-fastapi.onrender.com/
 
+## Documentação - Swagger
+Acesse a documentação interativa em: **http://localhost:3000/api-docs** ou **https://cars-fastapi.onrender.com/docs**
+
 ## Instalação
 ```bash
 npm install
