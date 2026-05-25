@@ -1,8 +1,5 @@
 import { z } from 'zod';
 
-const currentYear = new Date().getFullYear();
-const maxYear = currentYear + 1;
-
 export const nomeSchema = z.string().trim().min(1, 'Nome é obrigatório');
 
 export const marcaBodySchema = z.object({ nome: nomeSchema });
@@ -21,9 +18,7 @@ export const carroCreateSchema = z.object({
     .positive('Selecione um modelo'),
   ano: z.coerce
     .number({ error: 'Ano é obrigatório' })
-    .int('Ano deve ser um número inteiro')
-    .min(1900, 'Ano deve ser a partir de 1900')
-    .max(maxYear, `Ano não pode ser maior que ${maxYear}`),
+    .int('Ano deve ser um número inteiro'),
   combustivel: z.string().trim().min(1, 'Combustível é obrigatório'),
   numPortas: z.coerce
     .number({ error: 'Número de portas é obrigatório' })

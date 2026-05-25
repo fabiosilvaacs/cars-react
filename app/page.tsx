@@ -21,6 +21,7 @@ export default function Home(){
   const [deleteTarget, setDeleteTarget] = useState<Carro | Marca | Modelo | null>(null);
   const [deleteType, setDeleteType] = useState<'carro'|'marca'|'modelo' | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const carros = useCarroStore((state) => state.carros);
   const marcas = useMarcaStore((state) => state.marcas);
@@ -28,9 +29,6 @@ export default function Home(){
   const loadingCarros = useCarroStore((state) => state.loading);
   const loadingMarcas = useMarcaStore((state) => state.loading);
   const loadingModelos = useModeloStore((state) => state.loading);
-  const errorCarros = useCarroStore((state) => state.error);
-  const errorMarcas = useMarcaStore((state) => state.error);
-  const errorModelos = useModeloStore((state) => state.error);
   const addCarro = useCarroStore((state) => state.addCarro);
   const addMarca = useMarcaStore((state) => state.addMarca);
   const addModelo = useModeloStore((state) => state.addModelo);
@@ -42,15 +40,20 @@ export default function Home(){
   const removeModelo = useModeloStore((state) => state.removeModelo);
 
   const loading = loadingCarros || loadingMarcas || loadingModelos;
-  const error = errorCarros ?? errorMarcas ?? errorModelos;
 
   useEffect(() => {
     void fetchCatalog();
   }, []);
 
-  useEffect(() => {
-    setSelectedId(null);
-  }, [view]);
+  const extractErrorMessage = (err: any): string => {
+    const str = err.message || String(err);
+    try {
+      const parsed = JSON.parse(str);
+      return parsed.error || str;
+    } catch {
+      return str;
+    }
+  };
 
   const columns = useMemo(() => {
     if (view === 'carros') {
@@ -115,7 +118,7 @@ export default function Home(){
         await removeModelo(deleteTarget.id);
       }
     } catch (err:any) {
-      alert(err.message || String(err));
+      setErrorMessage(extractErrorMessage(err));
     } finally {
       setDeleteTarget(null);
       setDeleteType(null);
@@ -152,7 +155,7 @@ export default function Home(){
       setModalOpen(false);
       setEditing(null);
     } catch (err:any) {
-      alert(err.message || String(err));
+      setErrorMessage(extractErrorMessage(err));
     }
   }, [view, editing, addCarro, updateCarro, addMarca, updateMarca, addModelo, updateModelo]);
 
@@ -176,10 +179,6 @@ export default function Home(){
 
           <Activity mode={loading ? 'visible' : 'hidden'}>
             <div role="status" aria-live="polite" className="rounded bg-white p-4 shadow-sm text-slate-600">Carregando dados...</div>
-          </Activity>
-
-          <Activity mode={error ? 'visible' : 'hidden'}>
-            <div role="alert" className="rounded border border-red-200 bg-red-50 p-4 text-red-700">{error}</div>
           </Activity>
 
           <div className="overflow-x-auto rounded bg-white shadow-sm">
@@ -206,6 +205,7 @@ export default function Home(){
                   onClick: (item) => handleDelete(item, view === 'carros' ? 'carro' : view === 'marcas' ? 'marca' : 'modelo'),
                 },
               ]}
+              onRowClick={(item) => setSelectedId(item.id)}
               onRowDoubleClick={handleEdit}
               selectedId={selectedId}
             />
@@ -223,6 +223,15 @@ export default function Home(){
           <div className="mt-4 flex justify-end gap-2">
             <button type="button" onClick={() => setDeleteTarget(null)} className="rounded border px-4 py-2">Cancelar</button>
             <button type="button" onClick={confirmDelete} className="rounded bg-red-600 px-4 py-2 text-white">Excluir</button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal open={Boolean(errorMessage)} onClose={() => setErrorMessage(null)} title="Erro">
+        <div>
+          <p className="text-sm text-slate-700">{errorMessage}</p>
+          <div className="mt-4 flex justify-end">
+            <button type="button" onClick={() => setErrorMessage(null)} className="rounded bg-sky-600 px-4 py-2 text-white">Fechar</button>
           </div>
         </div>
       </Modal>

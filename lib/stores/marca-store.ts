@@ -1,11 +1,5 @@
 import { create } from 'zustand';
 import type { Marca } from '../types';
-import {
-  fetchMarcas,
-  createMarca,
-  updateMarca as apiUpdateMarca,
-  deleteMarca as apiDeleteMarca,
-} from '../api';
 
 interface MarcaStoreState {
   marcas: Marca[];
@@ -15,6 +9,30 @@ interface MarcaStoreState {
   addMarca: (nome: string) => Promise<Marca>;
   updateMarca: (id: number, nome: string) => Promise<void>;
   removeMarca: (id: number) => Promise<void>;
+}
+
+export async function fetchMarcas() {
+  const res = await fetch('/api/marcas');
+  if (!res.ok) throw new Error('Erro ao buscar marcas');
+  return res.json();
+}
+
+export async function apiCreateMarca(data: { nome: string }) {
+  const res = await fetch('/api/marcas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function apiUpdateMarca(id: number, data: { nome: string }) {
+  const res = await fetch(`/api/marcas/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function apiDeleteMarca(id: number) {
+  const res = await fetch(`/api/marcas/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
 }
 
 export const useMarcaStore = create<MarcaStoreState>((set) => ({
@@ -35,7 +53,7 @@ export const useMarcaStore = create<MarcaStoreState>((set) => ({
   addMarca: async (nome) => {
     set({ loading: true, error: null });
     try {
-      const marca = await createMarca({ nome });
+    const marca = await apiCreateMarca({ nome });
       set((state) => ({ marcas: [...state.marcas, marca] }));
       return marca;
     } catch (err: unknown) {

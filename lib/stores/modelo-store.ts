@@ -1,11 +1,5 @@
 import { create } from 'zustand';
 import type { Modelo } from '../types';
-import {
-  fetchModelos,
-  createModelo,
-  updateModelo as apiUpdateModelo,
-  deleteModelo as apiDeleteModelo,
-} from '../api';
 
 interface ModeloStoreState {
   modelos: Modelo[];
@@ -15,6 +9,30 @@ interface ModeloStoreState {
   addModelo: (nome: string, marcaId: number) => Promise<Modelo>;
   updateModelo: (id: number, nome: string, marcaId: number) => Promise<void>;
   removeModelo: (id: number) => Promise<void>;
+}
+
+export async function fetchModelos() {
+  const res = await fetch('/api/modelos');
+  if (!res.ok) throw new Error('Erro ao buscar modelos');
+  return res.json();
+}
+
+export async function apiCreateModelo(data: { nome: string; marcaId: number }) {
+  const res = await fetch('/api/modelos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function apiUpdateModelo(id: number, data: { nome: string; marcaId: number }) {
+  const res = await fetch(`/api/modelos/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function apiDeleteModelo(id: number) {
+  const res = await fetch(`/api/modelos/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
 }
 
 export const useModeloStore = create<ModeloStoreState>((set) => ({
@@ -35,7 +53,7 @@ export const useModeloStore = create<ModeloStoreState>((set) => ({
   addModelo: async (nome, marcaId) => {
     set({ loading: true, error: null });
     try {
-      const modelo = await createModelo({ nome, marcaId });
+      const modelo = await apiCreateModelo({ nome, marcaId });
       set((state) => ({ modelos: [...state.modelos, modelo] }));
       return modelo;
     } catch (err: unknown) {

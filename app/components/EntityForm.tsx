@@ -90,14 +90,11 @@ function ModeloForm({
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<ModeloFormInput, unknown, ModeloFormValues>({
     resolver: zodResolver(modeloBodySchema),
     defaultValues: { nome: editing?.nome ?? '', marcaId: editing?.marcaId ?? '' },
   });
-
-  const marcaId = watch('marcaId');
 
   useEffect(() => {
     reset({ nome: editing?.nome ?? '', marcaId: editing?.marcaId ?? '' });
