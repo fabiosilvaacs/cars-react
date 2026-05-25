@@ -67,7 +67,7 @@ export type DataGridProps<T extends { id: number }> = {
    * Key of the field used to group rows. When provided, rows are grouped
    * into collapsible sections and expand/collapse controls appear in the toolbar.
    */
-  groupBy?: keyof T & string;
+  groupBy?: (keyof T & string) | (string & {});
   /**
    * Singular label for the group item counter  (e.g. `'produto'`).
    * @default 'item'
