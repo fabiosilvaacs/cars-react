@@ -51,5 +51,3 @@ Thumbs.db
 
 # vercel
 .vercel
-
-prisma/dev.db

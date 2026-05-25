@@ -18,10 +18,10 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 
 ## GitHub https://github.com/fabiosilvaacs/cars-react
 
-## Publicação https://cars-fastapi.onrender.com/
+## Publicação https://cars-react-tau.vercel.app/  
 
 ## Documentação - Swagger
-Acesse a documentação interativa em: **http://localhost:3000/api-docs** ou **https://cars-fastapi.onrender.com/docs**
+Acesse a documentação interativa em: **http://localhost:3000/api-docs** ou **https://cars-react-tau.vercel.app/api-docs**
 
 ## Instalação
 ```bash
