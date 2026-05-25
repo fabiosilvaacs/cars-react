@@ -27,6 +27,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# environment variables
+.env*
+
 # editor directories and files
 .vscode/
 .idea/
@@ -48,3 +51,5 @@ Thumbs.db
 
 # vercel
 .vercel
+
+prisma/dev.db
