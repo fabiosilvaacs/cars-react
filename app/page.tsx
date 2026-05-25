@@ -55,7 +55,8 @@ export default function Home(){
     }
   };
 
-  const columns = useMemo(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const columns = useMemo((): import('./components/DataGrid').ColumnDef<any>[] => {
     if (view === 'carros') {
       return [
         { key: 'id',          label: 'ID',          sortType: 'numeric' as const },
@@ -184,7 +185,7 @@ export default function Home(){
           <div className="overflow-x-auto rounded bg-white shadow-sm">
             <DataGrid
               key={view}
-              items={view === 'carros' ? carros : view === 'marcas' ? marcas : modelos}
+              items={(view === 'carros' ? carros : view === 'marcas' ? marcas : modelos) as any[]}
               columns={columns}
               defaultSort={defaultSort}
               groupBy={(view === 'carros' || view === 'modelos') ? 'marca' : undefined}
