@@ -18,9 +18,11 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 
 ## GitHub https://github.com/fabiosilvaacs/cars-react
 
-## Publicação https://cars-react-tau.vercel.app/ - Erro de comunicação com o banco, que não consegui resolver a tempo da entrega. 
+## Publicação https://cars-react-tau.vercel.app/
+> [!NOTE]
+> Erro de comunicação com o banco, que não consegui resolver a tempo da entrega. 
 
-## Documentação - Swagger - No ar mas ainda a corrigir
+## Documentação - Swagger
 Acesse a documentação interativa em: **http://localhost:3000/api-docs** ou **https://cars-react-tau.vercel.app/api-docs**
 
 ## Instalação
@@ -34,6 +36,8 @@ npm run dev
 ```
 
 ## Testes - Jest
+> [!NOTE]
+> Tem alguns falhando ainda
 Olhar detalhes em TESTING.md
 
 ## Prisma Studio (visualizar/editar dados)
