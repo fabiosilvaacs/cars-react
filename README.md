@@ -12,8 +12,6 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 
 * Para validação se usou o [React Hook For](https://react-hook-form.com/) e [Zod](https://zod.dev/).
  
-* Para facilitar deixei o arquivo Insomnia_v5.yaml para ser importado e fazer os testes dos endpoints.
-
 * Documentação do DataGrid se encontra em DataGrid.md.
 
 * Ao adicionar um item já é selecionado no grid.
@@ -21,9 +19,6 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 ## GitHub https://github.com/fabiosilvaacs/cars_fastapi
 
 ## Publicação https://cars-fastapi.onrender.com/
-
-## Documentação
-Acesse a documentação interativa em: **http://localhost:8000/docs** ou **https://cars-fastapi.onrender.com/docs**
 
 ## Instalação
 ```bash
@@ -35,10 +30,8 @@ npm install
 npm run dev
 ```
 
-## Testes
-```bash
-python -m pytest tests/ -v
-```
+## Testes - Jest
+Olhar detalhes em TESTING.md
 
 ## Prisma Studio (visualizar/editar dados)
 ```bash
