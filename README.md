@@ -4,6 +4,8 @@ CRUD completo para **Marcas**, **Modelos** e **Carros**.
 
 ## Decisões Técnicas
 
+* Mais documentação no TESTING.md e DataGrid.md.
+
 * Não se usou o endpoint, mas foi utilizado o seu retorno como padrão para construir os modelos e assim criar um CRUD completo para **Marcas**, **Modelos** e **Carros**, dando ênfase maior no código do que na apresentação visual.
 
 * Ao clicar 1x na linha ela fica seleciona, quando mouse sobre fica em tom diferente e no double click entra em modo de edição.
